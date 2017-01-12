@@ -1,0 +1,138 @@
+Flow:
+-----
+
+JOIN => 
+
+REDUCE SIDE JOIN
+
+MAP SIDE JOIN
+
+
+file1.txt:
+----------
+(1, siva)
+(2, surendra)
+(3, nidhi)
+
+
+file2.txt:
+----------
+(1, tirupati)
+(2, barampur)
+(3, jabalpur)
+
+	(1, siva) => map => (1, siva) 
+	(1, tirupati) => map => (1, tirupati)
+
+								=> SS => (1, [siva, tirupati]) => REDUCE => (1, "siva, tirupati")
+output.txt:
+-----------
+(1, siva, tirupati)
+(2, surendra, barampur)
+(3, nidhi, jabalpur)
+
+let us do it in map-reduce way:
+
+map =>
+reduce => 
+
+================================================================================================================
+
+file1.txt:
+----------
+(siva, 1)
+(surendra, 2)
+(nidhi, 3)
+			(siva, 1) => map => (1, siva) 
+				REST IS SAME
+file2.txt:
+----------
+(tirupati, 1)
+(barampur, 2)
+(jabalpur, 3)
+
+output.txt:
+-----------
+(1, siva, tirupati)
+(2, surendra, barampur)
+(3, nidhi, jabalpur)
+
+
+map =>
+reduce => 
+
+===================================================================================================================
+
+file1.txt:
+----------
+(1, siva)
+(2, surendra)
+(3, nidhi)
+
+		map1 => to deal with file1
+
+file2.txt:
+----------
+(tirupati, 1)
+(barampur, 2)
+(jabalpur, 3)
+		
+		map2 => to deal with file2
+		
+		multiple inputs => method
+		
+output.txt:
+-----------
+(1, siva, tirupati)
+(2, surendra, barampur)
+(3, nidhi, jabalpur)
+
+===================================================================================================================
+Assignments:
+
+1. Write java program to make this file:
+
+infile1.txt:
+----------
+(siva, 1)
+(surendra, 2)
+(nidhi, 3)
+
+into this file:
+
+outfile1.txt:
+----------
+(1, siva)
+(2, surendra)
+(3, nidhi)
+
+2. Gather 3 to 4 example code which can help you to give demo for the concepts.
+
+3. How join will happen in map? in mapside join?
+	=> 
+	
+   not only that, if you do a join => you need atleast 2 files?
+	=> how to send 2 files to a map?
+
+
+
+Map Reduce Programs:
+
+	1. Have Map + Reduce => use it for join => REDUCE side join
+	
+	2. Have only Map => use it for join => MAP side join 
+
+JOIN => SORT + COMPARE + MERGE
+JOIN => SORT + shuffle(COMPARE + MERGE) + display (reduce)
+
+
+People want to say, what you want to hear.
+
+
+
+
+
+
+
+
+

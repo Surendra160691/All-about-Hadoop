@@ -1,0 +1,109 @@
+1. MovieLens data => extract year from the title
+2. How to move data from DB to HDFS/HIVE/HBASE/Hadoop?
+3. What is HBASE?
+4. 
+
+What to Gather? How to develop a Project?
+1. DataSets, like MovieLens, Olympic
+2. Problem Statement, 
+
+
+Your friend told you that he is working on logs? [can i duplicate that?]
+1. import logs to hdfs
+2. analysis => how many are in online/chat/duration (online activity)
+3. 
+
+We need to process the log? Not fixing the log.
+
+Basics vs Advanced
+Theory(oneliner) vs Scenario(movielens)
+
+
+Progress Report:
+---------------
+Component		Questions		Answered		Unanswered
+1. HDFS			65				65				0
+2. MR			35+				35+				0
+3. PIG(T)		25+				25+				0
+4. PIG(S)		85				70				15
+5. HIVE(T)		
+6. HIVE(S)		85
+7. MR(S)		
+
+JOIN Explanation:
+----------------
+setA and setB => setA JOIN setB => one keyword can help you solve the issue
+
+MapReduce => JAVA => Program => Algorithm => JOIN
+
+JOIN => internally has 3 algorithms => SORT(10+ways) + COMPARE + MERGE
+	
+	SORT => we avoid unneccessary iterationsj
+	
+	setA: anil,
+			sunil,
+				avil
+	setB: anil,
+			surendra,
+				siva
+
+How to make use of MR for JOIN?
+	=> which operation hadoop is doing autimagically => sort and shuffle
+
+
+Programmer: PAIN area => LOGIC
+input => HDFS 
+
+DB => SQOOP => HDFS
+DB => JAVA => HDFS
+
+Hadoop, HDFS, MR, HIVE, PIG, SQOOP, HBASE, FLUME, IMPALA, OOZIE, Zookeeper, Scala, Spark, Hue, Kafka, 
+
+"pick 3/4 skill which will give you job" => HDFS/MR/HIVE/PIG => Job Skills
+
+PreRequisite => JAVA/LINUX/SQL
+
+60% of the extra tools => not supposed to suck your time => 10% time is itself more to it.
+
+How to process an XML file?
+
+Normal Data:
+	excel
+	pdf
+	csv
+	txt
+	xml
+	json
+	
+Big Data FileFormats: (Data + MetaData + Binary + KeyValue)
+	Sequence Files
+	Parquet Files
+	ProtoBuffs
+	Avro Files
+	RC files
+	ORC files
+	etc
+	
+1. MovieLens question?
+	1234, Titanic (1997), romance => 3 fields => based on comma delimiter(seperator of fields + 1 delimiter for a file) 
+		what happens if I use "(" as delimiter
+			=> 
+			USING PigStorage(',')
+				WHERE 
+				FILTER
+				
+				extract year => how to do? "String functions" => string manipulations
+				
+				GROUP => field with name group, use AS to get alias
+
+				
+				',' OR '(' OR ')'
+
+hi',' OR '(' OR ')'hello',' OR '(' OR ')'how',' OR '(' OR ')'are',' OR '(' OR ')'you
+
+Home Work:
+----------
+1. Use all String Manipulation Functions in PIG. Create Questions accordingly.
+
+
+
