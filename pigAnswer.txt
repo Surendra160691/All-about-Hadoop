@@ -1,0 +1,445 @@
+WORD COUNT PROGRAM IN PIG
+---------------------------
+
+A = LOAD '/home/surendra/piginput' AS (line:chararray);
+B = FOREACH A GENERATE FLATTEN (TOKENIZE((chararray)line)) as lines;
+C = GROUP B by lines;
+D = FOREACH C GENERATE group, COUNT (B);
+---------------------------------------------------------------------------------
+1. How many records are there?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name: chararray, Country: chararray, Year: int, Sports: chararray, Gold: int, Silver: int, Bronze: int, Total: int);
+ 
+ //B = FOREACH A GENERATE COUNT (A), group;
+ B =GROUP A all;
+ C = FOREACH B GENERATE COUNT (A), group; or C= FOREACH B GENERATE COUNT(A);///8614
+ DUMP C;
+ 
+2. How many records are there per year?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A By Year;
+C = FOREACH B GENERATE group, COUNT (A);
+DUMP C;
+
+3. How many years information is there?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A BY Year;
+C = FOREACH B GENERATE group, COUNT(A);
+D = GROUP C ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E; ANS: 7
+
+4. How many records are there for each country? Once filter it, calculate the total count?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A By Country;
+C = FOREACH B GENERATE group COUNT (A);
+DUMP C;
+D = GROUP C ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E;
+
+5. How many number of athleats are there?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A By Name;
+C = FOREACH B GENERATE group, COUNT(A);
+DUMP C;
+D = GROUP C ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E; //ANS: 6956
+
+6. Alphabetically from A to Z => how many players are there?
+Solutions:
+==========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = ORDER A BY Name ASC/DESC;
+DUMP B;
+STORE B INTO '/home/surendra/Desktop/DataStore2';
+
+7. How many Gold, Silver, Bronze?
+Solutions:
+==========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A BY (Gold, Silver, Bronze);
+C = FOREACH B GENERATE group SUM(A.Gold), SUM(A.Silver), SUM(A.Bronze);
+DUMP C;
+// count total no. of record?
+D = GROUP C BY ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E;//39
+
+8. How many Gold, Silver, Bronze per Country?
+SOLUTIONS:
+==========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A BY Country;
+C = FOREACH B GENERATE group AS Country, SUM(A.Gold), SUM(A.Silver), SUM(A.Bronze) as Values;
+DUMP C;
+
+9. How many Sports are there?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A BY Sports;
+C = FOREACH B GENERATE COUNT(A);
+D = GROUP C ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E;//50
+
+10. Total number of all medals given?
+SOlution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A all;
+C = FOREACH B GENERATE SUM(A.Total);
+DUMP C;//9529
+
+11.Find out the Country name who won the highest no. of gold medal from 2000 to 2012?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+
+B = GROUP A ALL;
+
+C = FOREACH B GENERATE MAX(A.Gold) as values;
+//////DESCRIBE C;  ////C: {int}
+//////DUMP C; ////8
+
+D = JOIN A BY Gold, C BY Values;
+/////////////DESCRIBE D;
+////D: {A::Name: chararray,A::Country: chararray,A::Year: int,A::Sports: chararray,A::Gold: int,A::Silver: int,A::Bronze: int,A::Total: int,C::Values: int}
+/////////////DUMP D; //(Michael Phelps,United States,2008,Swimming,8,0,0,8,8)
+   
+E = FOREACH D GENERATE $1, $4;
+DUMP E;    //(United State, 8) 
+
+12. Find out the year which collects highest/lowest no. of gold medal?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A ALL;
+C = FOREACH B GENERATE MAX(A.Gold) AS Values;
+D = JOIN A BY Gold, C BY Values;
+E = FOREACH D GENERATE $2;
+DUMP E;	//2008
+
+13. Calculate the no. of medals for India and China in 2012?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = FILTER A BY ((Country=='India') OR (Country=='China')) AND Year==2012;
+C = GROUP B BY Country;
+D = FOREACH C GENERATE group as Country, SUM(B.Total);
+DUMP D;
+
+**14. Find out the Athletes name started with 'S'?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = ORDER A BY Name;
+C = FOREACH B GENERATE Name, STARTSWITH(Name, 'S');
+DUMP C;
+
+15. Find out the Athletes name who were participated in Swiming in 2012?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = FILTER A BY Year==2012;
+SPLIT B INTO C IF Sports == 'Swiming', D IF Sports != 'Swiming';
+E = GROUP C BY Name;
+F = FOREACH E GENERATE group;
+DUMP F;
+16. Find out the total no. of contries who were not won gold medal in 2008?
+Solution:
+========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = FILTER A BY Year==2008 AND Gold==0;
+C = GROUP B BY Country;
+D = FOREACH C GENERATE group AS Country;
+E = GROUP D ALL;
+F = FOREACH E GENERATE COUNT(D);
+17.Find out the country that was collected highest no. of gold in 2008?
+solution:
+---------
+a= load '/home/siva/OlympicAthletes.csv' Using PigStorage(',') as(name :chararray,country :chararray,year :int,sport :chararray,gold :int,silver :int,bronze :int,total :int);
+b = filter a by year == 2008;
+c = group b all;
+d = foreach c generate MAX(b.gold)values;
+e = join b by gold,d by values;
+f = foreach e generate $2;
+18. How many countries won only 1 medal?
+solution:
+---------
+a= load '/home/siva/OlympicAthletes.csv' Using PigStorage(',') as(name :chararray,country :chararray,year :int,sport :chararray,gold :int,silver :int,bronze :int,total :int);
+b = filter a by  total==1;
+c = foreach b generate country;
+d = DISTINCT c;
+e = group d all;
+f = foreach e generate COUNT(d.country);
+
+19. Find the country with the most medals EXCLUDING swimming medals?
+solution:
+---------
+a= load '/home/siva/OlympicAthletes.csv' Using PigStorage(',') as(name :chararray,country :chararray,year :int,sport :chararray,gold :int,silver :int,bronze :int,total :int);
+b = filter a by sport !='swimming';
+c = group b by country;
+d = foreach c generate group as country1,SUM(b.total)as values;
+e = group d by country1;
+f = foreach e generate group as country2,MAX(d.values)as values1;
+20. Find the athletes who have gotten the same number of medals in 2012?
+solution:
+---------
+a= load '/home/siva/OlympicAthletes.csv' Using PigStorage(',') as(name :chararray,country :chararray,year :int,sport :chararray,gold :int,silver :int,bronze :int,total :int);
+b = filter a by year ==2012;
+c = group b by name;
+21. Find the name of the Athlete who won more than 3 medals twice?
+solution:
+---------
+a= load '/home/siva/OlympicAthletes.csv' Using PigStorage(',') as(name :chararray,country :chararray,year :int,sport :chararray,gold :int,silver :int,bronze :int,total :int);
+b = filter a by total == 3;
+c =foreach b generate names;
+B = filter A by year>=2000 AND year<=2006;
+		C = foreach B generate (B.year), group AS country, SUM(B.gold) as values;
+		ordered = order B by values DESC;
+		ordered_Lim = LIMIT ordered 1;
+		dump ordered;
+22.Find out the total no. of contries who were not won gold medal in 2008?
+    a= load '/home/siva/OlympicAthletes.csv' Using PigStorage(',') as(name :chararray,country :chararray,year :int,sport :chararray,gold :int,silver :int,bronze :int,total :int);
+	B = filter A by (year == 2008) AND (gold == 0);
+	C = DISTINCT (foreach B generate country);
+	D = group C all;
+	E = foreach D generate (C.country), COUNT(C.country);
+23.Find out the athletes name who won more than 2 medals in 2008?
+		B = foreach (filter A by (year == 2008) AND (total > 2)) generate year, Athlete, total;
+24.What country has won the most winter Olympic medals?
+	Hint: SPLIT athletes INTO
+            summer_olympics IF year % 4 == 0,
+            winter_olympics IF year % 4 != 0;
+	--------------------------------------------------		
+Ans.	winter_Oympic = filter A by (year % 4 !=0);
+						OR
+		(split A into winter_Olympic if (year % 4 !=0), summer_Olympic if (year % 4 == 0); )
+		
+		B = foreach (group winter_Olympic by country) generate group AS country, SUM(winter_Olympic) AS values;
+		C = order B by values DESC;
+		C_Lim = LIMIT C 1;
+		dump C_Lim;
+25. Total name should be in decreasing order?
+Ans.	DescOrder = order (foreach A generate Athlete) by Athlete; //
+26.How to find the highest gold collected name?
+Ans.	Highest_Gold = foreach (order A by gold DESC) generate Athlete,gold;
+		Highest_Gold_Limit = LIMIT Highest_Gold 1;
+27.How to know the year by collection silver,gold?
+Ans.	B = group A by year;
+		C = foreach B generate group as year, SUM(A.gold), SUM(A.silver), SUM(A.bronze) as values;
+		dump C;//(1999, 647,789,364)
+28.	How to find by the name total?
+Ans.	B = foreach B generate Athlete, total;
+29.how to find the group silver,gold,bronze at a time?
+Ans.	B = group A by (gold,silver,bronze);
+30.How to count the records with null value?
+Ans.	Num of records : 
+		B = group A all;
+		c = = foreach B generate COUNT_STAR(A);
+		dump C;  //(8869)
+31.find the records of players, who belongs to China?
+Ans.	filtered = filter A by country == 'China';
+32.How to get  a list of distinct country?
+Ans.	distinct_countries = DISTINCT (FOREACH athletes GENERATE country);
+33.what is min and max date in Data?
+Ans.	data_range = FOREACH (GROUP athletes ALL) GENERATE MIN(athletes.year) as min_year, MAX(athletes.year) as max_year;
+		DUMP data_range;
+34.calculate no. of medal won by each country?
+Ans.	athlete_grp_country = group A by country;
+		medal_sum = FOREACH athletes_grp_country GENERATE group AS country, SUM(athletes.total) as medal_count;
+		DUMP medal_sum;
+35.Find the country with the most medals by using ORDER and then LIMIT.
+Ans.	medal_sum = FOREACH athletes_grp_country GENERATE group AS country, SUM(athletes.total) as medal_count;
+		ordered_medals = ORDER medal_sum BY medal_count DESC;
+		ordered_medals_lim = LIMIT ordered_medals 1;
+		DUMP ordered_medals_lim;
+36.find the country with the most medals EXCLUDING swimming medals.
+Ans.	athletes_filter = FILTER athletes by sport != 'Swimming';
+		medal_sum = FOREACH (GROUP athletes_filter BY country) GENERATE group as country, SUM(athletes_filter.total) as medal_count;
+		ordered_medals = ORDER medal_sum BY medal_count DESC;
+		ordered_medals_lim = LIMIT ordered_medals 1;
+		DUMP ordered_medals_lim;
+
+37.How many countries won only 1 medal?
+Ans.	medal_sum = foreach (group A by country) generate group as country, SUM(A.total) as medal_count;
+		filtered = filter medal_sum by medal_count == 1;
+		dump filtered;
+38..how to find by the name and total?
+solution:
+---------
+b = group a by name;
+c = foreach b generate group,SUM(a.total);
+39.how many sports are there in the year 2000 and 2012;
+b = filter a by year==2000 and year == 2012;
+c = group b by sport;
+d = foreach c generate COUNT(b.sports);
+40.How to get  a list of distinct country?
+b = FOREACH a generate country;
+c = DISTINCT a by country;
+d = foreach c generate country;
+--------------------------------------------------------------------------------------------------
+1  movie = load '/home/siva/ml-latest-small/movies.csv' USING PigStorage(',') as(moveid: int,title:chararray,geners:chararray);
+2  rating = load '/home/siva/ml-latest-small/ratings.csv' USING PigStorage(',') as(userid :int,movieid :int,rating :int,timestramp :int);
+3  tags = load '/home/siva/ml-latest-small/tags.csv' USING PigStorage(',') as(userid :int,movieid :int,rating :int,timestramp :int);
+-------------------------------------------------------------------------------------------------
+46. What is the tag for 'Now and Then'?
+b = Filter movie by title =='Now and Then (1995)';
+c = join b by moveid,movie by movieid;
+47.How many movies are released after 1997?
+--
+48.How many movies are rated 4, between the year 1992 and 1995?
+---
+49.How many movies starts form character A?
+b = foreach movie generate title;
+c = filter b by (title,Matches('%A'))
+50.How many movies are tagged by drama?
+b = filter movies by geners == 'drama';
+c = join b by moveid,movie by movieid;
+51. How many movies are we talking about?
+b = group movie all;
+c = foreach b generate count(b);
+52. How many movies are good AND how many movies are BAD?
+b = filter rating by rating<2.0;
+c = join b by moveid,movie by movieid;
+d = foreach c generate movie.title;
+53. How many movies are of foriegn language?
+----
+54. How many movies are from english language?
+---
+55. How many movies have rating greater than 4?
+b = filter rating by rating>4.0;
+c = join b by moveid,movie by movieid;
+d = foreach c generate movie.title;
+56. How many movies are allowed to be watched by children?
+--
+57. How many movies are rated A?
+--
+58. How many movies are released in the year 1997?
+--
+59. How much collections does a movie made?
+--
+60. Total collections made by the movie TITANIC?
+--
+61. How many movie names have the keyword LOVE in it?
+b = filter title by (title,Matches(.*LOVE*.) ;
+c = filter b by title == 'love';
+62. LIST out the movies names count alphabetically => A - Z 
+b = foreach movie generate title order by title;
+63.total count of movies?
+b = group movie all;
+c = foreach b generate COUNT(b);
+64. how many geners belongs to comedy?
+b = filter b by geners == 'comdey';
+c = foreach b generate title;
+65.how many action movies are there?
+b = filter b by geners == 'action';
+c = foreach b generate title;
+66.what is the average rating of Thriller movies?
+b = filter b by title == 'Thriller movies';
+c = join b by moveid,rating by moveid;
+67.which comdey movie got the highest rating?
+b = filter b by geners == 'comdey';
+c = join b by moveid,rating by moveid;
+d = foreach c generate MAX(rating);
+68.what are the tags for star Wars movie?
+b = filter b by title == 'star Wars movie';
+c = join b by moveid,tags by moveid;
+69.how many movies having crime and drama and thriller
+b = filter b by geners == 'drama' and 'thriller';
+70.how many movie names start with number?
+-
+71.which movie got highest rating in drama;
+b = filter b by geners == 'drama';
+c = join b by moveid,rating by moveid;
+d = foreach c generate MAX(rating);
+72.which movie got the less rating;
+b = group movie all;
+c = foreach b generate MIN(rating);
+73.how many movies got above 4 rating;
+b = filter rating by rating>4.0;
+c = join b by moveid,rating by moveid;
+74.how many  comdey movies got 5 rating;
+b = filter rating by rating ==5.0;
+c = join b by moveid,rating by moveid;
+75. which movie got prison tag
+b = filter tags by tags=='prison';
+c = join b by moveid,tags by moveid;
+76.what is the rating for the movie GOldeneye?
+b = filter movie by title =='GOldeneye';
+c = join b by moveid,rating by moveid;
+77.title American belongs to which geners?
+b = filter movie by title =='American';
+c = foreach b generate geners;
+78.What is the rating for 'Toy Story' ?
+b = filter movie by title =='Toy story';
+c = join b by moveid,rating by moveid;
+79.List out the movie names, are rated between 4 to 4.5 ?
+b = filter rating by rating == 4.0 and rating ==4.5;
+c = join b by moveid,rating by moveid;
+80.How many movies are released between the year 1992 and 1995 ?
+-
+81.What is max year, in the movie releasing list?
+-
+82.What is imdbld and tmdbld for 'Batman Forever' ?
+-
+83.which movies belongs to geners'DRAMA' 
+b = filter movie by geners =='DRAMA';
+c = foreach b generate movie;
+84.Find the top 10 movies for the year by rating
+-
+85.FILTER all staring with "A" letter and rating for that?
+b = filter movie by title Matches '.*A.*;
+86. List the Animation movies, which released on 1942?
+--
+87. List the movies name who got 2.5 rating?
+b = filter rating by rating == 2.5;
+c = join b by movieid,movie by moveid
+88. List the Adventure movies strats with 'G'?
+b = filter movie by geners =='Adventure';
+c = filter b by title Matches('.*G.*);
+89. List only action movies?
+b = filter movie by geners =='Action';
+c = foreach b generate title;
+90. Find the 'tmdbid' for Tom and Huck (1995)?
+-
+91. List the movie names, released on leap year?
+-
+92. List all the Comedy with Romance Movies?
+b = filter movie by geners =='Comedy' and geners =='Romance';
+c = foreach b generate title;
+93. Total no. of movies got 4.5 rating in 1995?
+-
+94. Find the rating of the movie which contain 'imdbid=113228'?
+-
+95. List all the movie id with tag 'action'?
+b = filter tags by tag =='Action';
+c = foreach b generate moveid;
+96. Find the rating and tag for 'Copycat (1995)'?
+b = filter movie by title =='Copycat (1995)';
+c = join b by moveid,tags by movieid,rating by movieid;
+97. Which movie got highest rating?
+b = foreach movie generate MAX(rating);
+98. Find the Comedy movie which got lowest rating?
+b = foreach movie generate MIN(rating);
+99. List the tag 'userId' which have tag= dentist?
+b = filter tags by tag =='dentist';
+c = foreach tags generate userId ;
+100. List all the 'movieid' and 'timestamp' for tag= horror?
+
+b = filter tags by tag =='horror';
+c = foreach tags generate movieid,timestamp;
+
+

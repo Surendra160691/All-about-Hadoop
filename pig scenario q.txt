@@ -1,0 +1,194 @@
+WORD COUNT PROGRAM IN PIG
+---------------------------
+
+A = LOAD '/home/surendra/piginput' AS (line:chararray);
+B = FOREACH A GENERATE FLATTEN (TOKENIZE((chararray)line)) as lines;
+C = GROUP B by lines;
+D = FOREACH C GENERATE group, COUNT (B);
+---------------------------------------------------------------------------------
+1. How many records are there?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name: chararray, Country: chararray, Year: int, Sports: chararray, Gold: int, Silver: int, Bronze: int, Total: int);
+ 
+ //B = FOREACH A GENERATE COUNT (A), group;
+ B =GROUP A all;
+ C = FOREACH B GENERATE COUNT (A), group; or C= FOREACH B GENERATE COUNT(A);///8614
+ DUMP C;
+ 
+2. How many records are there per year?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A By Year;
+C = FOREACH B GENERATE group, COUNT (A);
+DUMP C;
+
+3. How many years information is there?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A BY Year;
+C = FOREACH B GENERATE group, COUNT(A);
+D = GROUP C ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E; ANS: 7
+
+4. How many records are there for each country? Once filter it, calculate the total count?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A By Country;
+C = FOREACH B GENERATE group COUNT (A);
+DUMP C;
+D = GROUP C ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E;
+
+5. How many number of athleats are there?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A By Name;
+C = FOREACH B GENERATE group, COUNT(A);
+DUMP C;
+D = GROUP C ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E; //ANS: 6956
+
+6. Alphabetically from A to Z => how many players are there?
+Solutions:
+==========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = ORDER A BY Name ASC/DESC;
+DUMP B;
+STORE B INTO '/home/surendra/Desktop/DataStore2';
+
+7. How many Gold, Silver, Bronze?
+Solutions:
+==========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A BY (Gold, Silver, Bronze);
+C = FOREACH B GENERATE group SUM(A.Gold), SUM(A.Silver), SUM(A.Bronze);
+DUMP C;
+// count total no. of record?
+D = GROUP C BY ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E;//39
+
+8. How many Gold, Silver, Bronze per Country?
+SOLUTIONS:
+==========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A BY Country;
+C = FOREACH B GENERATE group AS Country, SUM(A.Gold), SUM(A.Silver), SUM(A.Bronze) as Values;
+DUMP C;
+
+9. How many Sports are there?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS(Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A BY Sports;
+C = FOREACH B GENERATE COUNT(A);
+D = GROUP C ALL;
+E = FOREACH D GENERATE COUNT(C);
+DUMP E;//50
+
+10. Total number of all medals given?
+SOlution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A all;
+C = FOREACH B GENERATE SUM(A.Total);
+DUMP C;//9529
+
+11.Find out the Country name who won the highest no. of gold medal from 2000 to 2012?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+
+B = GROUP A ALL;
+
+C = FOREACH B GENERATE MAX(A.Gold) as values;
+//////DESCRIBE C;  ////C: {int}
+//////DUMP C; ////8
+
+D = JOIN A BY Gold, C BY Values;
+/////////////DESCRIBE D;
+////D: {A::Name: chararray,A::Country: chararray,A::Year: int,A::Sports: chararray,A::Gold: int,A::Silver: int,A::Bronze: int,A::Total: int,C::Values: int}
+/////////////DUMP D; //(Michael Phelps,United States,2008,Swimming,8,0,0,8,8)
+   
+E = FOREACH D GENERATE $1, $4;
+DUMP E;    //(United State, 8) 
+
+12. Find out the year which collects highest/lowest no. of gold medal?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = GROUP A ALL;
+C = FOREACH B GENERATE MAX(A.Gold) AS Values;
+D = JOIN A BY Gold, C BY Values;
+E = FOREACH D GENERATE $2;
+DUMP E;	//2008
+
+13. Calculate the no. of medals for India and China in 2012?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = FILTER A BY ((Country=='India') OR (Country=='China')) AND Year==2012;
+C = GROUP B BY Country;
+D = FOREACH C GENERATE group as Country, SUM(B.Total);
+DUMP D;
+
+**14. Find out the Athletes name started with 'S'?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = ORDER A BY Name;
+C = FOREACH B GENERATE Name, STARTSWITH(Name, 'S');
+DUMP C;
+
+15. Find out the Athletes name who were participated in Swiming in 2012?
+Solution:
+=========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = FILTER A BY Year==2012;
+SPLIT B INTO C IF Sports == 'Swiming', D IF Sports != 'Swiming';
+E = GROUP C BY Name;
+F = FOREACH E GENERATE group;
+DUMP F;
+
+
+
+14. Find out the total no. of contries who were not won gold medal in 2008?
+Solution:
+========
+A = LOAD '/home/surendra/Documents/OlympicAthletes.csv' USING PigStorage(',') AS (Name:chararray, Country:chararray, Year:int, Sports:chararray, Gold:int, Silver:int, Bronze:int, Total:int);
+B = FILTER A BY Year==2008 AND Gold==0;
+C = GROUP B BY Country;
+D = FOREACH C GENERATE group AS Country;
+E = GROUP D ALL;
+F = FOREACH E GENERATE COUNT(D);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

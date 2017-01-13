@@ -1,0 +1,103 @@
+1. Find out the highest no. of gold medal from 2000 to 2012?
+2. Find out the year which collect highest/min no. of gold medal?
+3. Calculate the no. of medals for India and China in 2012?
+4. Find out the Athletes name started with 'S'?
+5. Find out the Athletes name who were participated in Swiming in 2012?
+6. Find out the country that was collected highest no. of gold in 2008?
+7.  How many countries won only 1 medal?
+8. Find the country with the most medals EXCLUDING swimming medals?
+9. Find the athletes who have gotten the same number of medals in 2012?
+10. Find the name of the Athlete who won more than 3 medals twice?
+11. What country has won the most winter Olympic medals?
+Hint: SPLIT athletes INTO
+            summer_olympics IF year % 4 == 0,
+            winter_olympics IF year % 4 != 0;
+12. Find out the athletes name who won more than 2 medals in 2008? 
+13. Find out the athletes name who won gold and silver medals in 2012? 
+14. Find out the total no. of contries who were not won gold medal in 2008?
+15. Find the country name who won highest no. of bronze and minimum no. of gold?
+16.Alphabetically from A to Z sports.
+17.how to find the name highest gold collected name;
+18.how to know year by collection how many gold,silver
+19.how to find by the name total?
+20.compare the total and find the highest collected gold,silver,Bronze?
+21.how to group the name and year at a time?
+22.dispaly the name by based on the highest total;
+23. How many records are there?
+24. How many records are there per year?
+25. How many years information is there?
+26. How many records are there for each country?
+27. How many number of athleats are there?
+28. Alphabetically from A to Z => how many players are there?
+29. How many Gold, Silver, Bronze?
+30. How many Gold, Silver, Bronze per Country?
+31. How many Sports are there?
+32. Total number of all medals given?
+33. Total name should be in decreasing order?
+34. How to find the highest gold collected name?
+35. How to know the year by collection silver,gold?
+36. How to find by the name total?
+37. how to find the group silver,gold,bronze at a time?
+38. How to count the records with null value?
+39. find the records of players, who belongs to China?
+40.How to get  a list of distinct country?
+41.	what is min and max date in Data?
+42.	calculate no. of medal won by each country?
+43.Find the country with the most medals by using ORDER and then LIMIT.
+44.find the country with the most medals EXCLUDING swimming medals.
+45.How many countries won only 1 medal?
+46. What is the tag for 'Now and Then'?
+47.How many movies are released after 1997?
+48.How many movies are rated 4, between the year 1992 and 1995?
+49.How many movies starts form character A?
+50.How many movies are tagged by drama?
+51. How many movies are we talking about?
+52. How many movies are good AND how many movies are BAD?
+53. How many movies are of foriegn language?
+54. How many movies are from english language?
+55. How many movies have rating greater than 8?
+56. How many movies are allowed to be watched by children?
+57. How many movies are rated A?
+58. How many movies are released in the year 1997?
+59. How much collections does a movie made?
+60. Total collections made by the movie TITANIC?
+61. How many movie names have the keyword LOVE in it?
+62. LIST out the movies names count alphabetically => A - Z 
+63.total count of movies?
+64. how many geners belongs to comedy?
+65.how many action movies are there?
+66.what is the average rating of Thriller movies?
+67.which comdey movie got the highest rating?
+68.what are the tags for star Wars movie?
+69.how many movies having crime and drama and thriller
+70.how many movie names start with number?
+71.which movie got highest rating in drama;
+72.which movie got the less rating;
+73.how many movies got above 4 rating;
+74.how many  comdey movies got 5 rating;
+75. which movie got prison tag
+76.what is the rating for the movie GOldeneye?
+77.title American belongs to which geners?
+78.What is the rating for 'Toy Story' ?
+79.List out the movie names, are rated between 4 to 4.5 ?
+80.How many movies are released between the year 1992 and 1995 ?
+81.What is max year, in the movie releasing list?
+82.What is imdbld and tmdbld for 'Batman Forever' ?
+83.which movies belongs to geners'DRAMA' 
+84.Find the top 10 movies for the year by rating
+85.FILTER all staring with "A" letter and rating for that?
+86. List the Animation movies, which released on 1942?
+87. List the movies name who got 2.5 rating?
+88. List the Adventure movies strats with 'G'?
+89. List only action movies?
+90. Find the 'tmdbid' for Tom and Huck (1995)?
+91. List the movie names, released on leap year?
+92. List all the Comedy with Romance Movies?
+93. Total no. of movies got 4.5 rating in 1995?
+94. Find the rating of the movie which contain 'imdbid=113228'?
+95. List all the movie id with tag 'action'?
+96. Find the rating and tag for 'Copycat (1995)'?
+97. Which movie got highest rating?
+98. Find the Comedy movie which got lowest rating?
+99. List the tag 'userId' which have tag= dentist?
+100. List all the 'movieid' and 'timestamp' for tag= horror?
