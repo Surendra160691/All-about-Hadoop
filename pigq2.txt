@@ -1,0 +1,101 @@
+Q1 How will you explain co group in Pig?
+
+Answer: COGROUP is found in Pig that works in several tuples. The operator can also be applied on several statements which contain or have a few relations at least a hundred and twenty seven relations at every time. When you are making use of the operator on tables, then Pig will immediately book two tables and post that it will join two of the tables on some of the columns that are grouped.
+
+*Q2 What is BloomMapFile used for?
+
+Answer: The BloomMapFile is a class that extends MapFile. So its functionality is similar to MapFile.
+
+BloomMapFile uses dynamic Bloom filters to provide quick membership test for the keys. It is used in Hbase table format.
+
+*Q3 What is the difference between logical and physical plans?
+
+Answer: Pig undergoes some steps when a Pig Latin Script is converted into MapReduce jobs. After performing the basic parsing and semantic checking, it produces a logical plan. The logical plan describes the logical operators that have to be executed by Pig during execution. After this, Pig produces a physical plan. The physical plan describes the physical operators that are needed to execute the script.
+
+Q6 Does ‘ILLUSTRATE’ run MR job?
+
+Answer: No, illustrate will not pull any MR, it will pull the internal data. On the console, illustrate will not do any job. It just shows output of each stage and not the final output.
+
+Q8 Is the keyword ‘DEFINE’ like a function name?
+
+Answer: Yes, the keyword ‘DEFINE’ is like a function name. Once you have registered, you have to define it. Whatever logic you have written in Java program, you have an exported jar and also a jar registered by you. Now the compiler will check the function in exported jar. When the function is not present in the library, it looks into your jar.
+
+Q13 What are the different execution mode available in Pig?
+
+Answer: There are 3 modes of execution available in pig
+
+Interactive Mode (Also known as Grunt Mode)
+
+Batch Mode
+
+Embedded Mode
+
+Q36 What is the MapReduce plan in pig architecture?
+
+Answer: In MapReduce than the output of Physical plan is converted into an actual MapReduce program. Which then executed across the Hadoop Cluster.
+
+Q37 What is the logical plan in pig architecture?
+
+Answer: In the Logical plan stage of Pig, statements are parsed for syntax error. Validation of input files and the data structure of the file is also analysed. A DAG (Directed Acyclic Graph) of operators as nodes and data flow as edges are then created. Optimization of pig scripts also materialized to the logical plan.
+
+Q38 What is UDF in Pig?
+
+Answer: The pig has wide-ranging inbuilt functions, but occasionally we need to write complex business logic, which may not be implemented using primitive functions. Thus, Pig provides support to allow writing User Defined Functions (UDFs) as a way to stipulate custom processing.
+
+Pig UDFs can presently be implemented in Java, Python, JavaScript, Ruby and Groovy. The most far-reaching support is provided for Java functions. You can customize all parts of the processing, including data load/store, column transformation, and aggregation. Java functions are also additional efficient because they are implemented in the same language as Pig and because additional interfaces are supported. Such as the Algebraic Interface and the Accumulator Interface. Limited support is provided for Python, JavaScript, Ruby and Groovy functions.
+
+
+Q50 What is the difference between store and dumps commands?
+
+Answer: Dump Command after process the data displayed on the terminal, but it’s not stored anywhere. Where as store store in local file system or HDFS and output execute in a folder. In the protection environment most opften hadoop developer used ‘store’ command to store data in the HDFS.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

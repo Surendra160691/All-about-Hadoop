@@ -1,0 +1,18 @@
+1. Find out the highest no. of gold medal from 2000 to 2012?
+2. Find out the year which collect highest/min no. of gold medal?
+3. Calculate the no. of medals for India and China in 2012?
+4. Find out the Athletes name started with 'S'?
+5. Find out the Athletes name who were participated in Swiming in 2012?
+6. Find out the country that was collected highest no. of gold in 2008?
+7.  How many countries won only 1 medal?
+8. Find the country with the most medals EXCLUDING swimming medals?
+9. Find the athletes who have gotten the same number of medals in 2012?
+10. Find the name of the Athlete who won more than 3 medals twice?
+11. What country has won the most winter Olympic medals?
+Hint: SPLIT athletes INTO
+            summer_olympics IF year % 4 == 0,
+            winter_olympics IF year % 4 != 0;
+12. Find out the athletes name who won more than 2 medals in 2008? 
+13. Find out the athletes name who won gold and silver medals in 2012? 
+14. Find out the total no. of contries who were not won gold medal in 2008?
+15. Find the country name who won highest no. of bronze and minimum no. of gold?
